@@ -9,3 +9,10 @@
 .todo-content {
   margin-left: 3%
 }
+
+
+.todo-item.completed {
+  background: lightgreen;
+  font-style: italic;
+  text-decoration: line-through
+}
