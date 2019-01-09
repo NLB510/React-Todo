@@ -1,15 +1,19 @@
 import React from "react";
 import TodoList from "./components/TodoComponents/TodoList";
 import TodoForm from "./components/TodoComponents/TodoForm";
+import "./app.css";
+
 
 const todoData = [
   {
     task: "Organize Garage",
+    taskDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     id: 1528817077286,
     completed: false
   },
   {
     task: "Bake Cookies",
+    taskDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     id: 1528817084358,
     completed: false
   }
@@ -24,7 +28,9 @@ class App extends React.Component {
 
     this.state = {
       todoData: todoData,
-      taskInput: ""
+      taskInput: "",
+      taskInputText: "",
+
     };
   }
 
@@ -51,6 +57,7 @@ class App extends React.Component {
       todoData: [
         ...this.state.todoData,
         { task: this.state.taskInput,
+          taskDescription: this.state.taskInputText,
           id: this.getNewId(),
           completed: false
         }
@@ -63,9 +70,9 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="app">
         <TodoList todoList={this.state.todoData} />
-        <TodoForm inputText={this.taskInput} handleChange={this.handleChange} addTask={this.addTask} />
+        <TodoForm inputText={this.state.taskInput} handleChange={this.handleChange} addTask={this.addTask} descriptionInput={this.state.taskTextInput} />
       </div>
     );
   }

@@ -1,0 +1,11 @@
+.todo-item {
+  border: 1px solid black;
+  margin: 4% auto;
+  display: flex;
+  align-items: center;
+  padding: 2%;
+}
+
+.todo-content {
+  margin-left: 3%
+}
