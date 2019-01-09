@@ -3,13 +3,12 @@ import TodoList from "./components/TodoComponents/TodoList";
 import TodoForm from "./components/TodoComponents/TodoForm";
 import "./app.css";
 
-
 const todoData = [
   {
     task: "Organize Garage",
     taskDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     id: 1528817077286,
-    completed: false
+    completed: true
   },
   {
     task: "Bake Cookies",
@@ -29,9 +28,10 @@ class App extends React.Component {
     this.state = {
       todoData: todoData,
       taskInput: "",
-      taskInputText: "",
-
+      taskInputText: ""
     };
+
+    
   }
 
   getNewId = () => {
@@ -56,23 +56,42 @@ class App extends React.Component {
     this.setState({
       todoData: [
         ...this.state.todoData,
-        { task: this.state.taskInput,
+        {
+          task: this.state.taskInput,
           taskDescription: this.state.taskInputText,
           id: this.getNewId(),
           completed: false
         }
       ],
       inputText: ""
-    })
-
-
+    });
   };
+
+  completeTask = (id) => {
+    this.setState(prevState => {
+      const completedTodos = prevState.todoData.map(task => {
+        if (task.id === id) {
+          task.completed = !task.completed;
+        }
+        return task;
+      });
+
+      return {
+        todoData: completedTodos
+      };
+    });
+  }
 
   render() {
     return (
       <div className="app">
-        <TodoList todoList={this.state.todoData} />
-        <TodoForm inputText={this.state.taskInput} handleChange={this.handleChange} addTask={this.addTask} descriptionInput={this.state.taskTextInput} />
+        <TodoList todoList={this.state.todoData} completeTask={this.completeTask} />
+        <TodoForm
+          inputText={this.state.taskInput}
+          handleChange={this.handleChange}
+          addTask={this.addTask}
+          descriptionInput={this.state.taskTextInput}
+        />
       </div>
     );
   }

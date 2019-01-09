@@ -10,7 +10,7 @@ const TodoList = props => {
     <React.Fragment>
       {
         props.todoList.map(todo => {
-          return <Todo todo={todo} key={todo.id}/>
+          return <Todo todo={todo} key={todo.id} completeTask={props.completeTask} />
         })
       }
     </React.Fragment>

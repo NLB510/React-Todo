@@ -11,6 +11,7 @@ const TodoForm = props => {
             value={props.inputText}
             name="taskInput"
             onChange={props.handleChange}
+            
           />
           <textarea
             name="taskInputText"
