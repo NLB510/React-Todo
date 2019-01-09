@@ -25,6 +25,7 @@ const TodoForm = props => {
            
          
           <button type="submit">Add Task</button>
+          <button onClick={props.removeCompletedTasks}>Remove Completed</button>
         </div>
       </form>
     </div>

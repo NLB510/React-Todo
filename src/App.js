@@ -63,7 +63,8 @@ class App extends React.Component {
           completed: false
         }
       ],
-      inputText: ""
+      inputText: "",
+      taskInputText: ""
     });
   };
 
@@ -82,6 +83,26 @@ class App extends React.Component {
     });
   }
 
+  removeCompletedTasks = (e) => {
+    e.preventDefault();
+    console.log("remove button fired")
+
+    
+      const updatedTodos = this.state.todoData.filter(task => {
+        if (!task.completed) {
+          return task 
+        }
+      })
+
+      this.setState({
+        todoData: updatedTodos
+      })
+
+      console.log(updatedTodos)
+       
+
+  }
+
   render() {
     return (
       <div className="app">
@@ -91,6 +112,7 @@ class App extends React.Component {
           handleChange={this.handleChange}
           addTask={this.addTask}
           descriptionInput={this.state.taskTextInput}
+          removeCompletedTasks={this.removeCompletedTasks}
         />
       </div>
     );
