@@ -6,20 +6,22 @@ body {
 .app {
   width: 80%;
   margin: 0 auto;
-  display: flex;
   justify-content: space-between;
   align-items: center;
-  /* position: relative; */
+  
 }
 
 
 .form-main-container{
-  width: 30%;
+  width: 20%;
   margin-right: 10%;
-  /* position: absolute; */
-  left: 0px;
+  position: fixed;
+  height: 300px;
+  top: 150px;
+  
 }
 
 .todo-main-container {
-  width: 80%;
+  width: 40%;
+  margin-left: 30%;
 }
