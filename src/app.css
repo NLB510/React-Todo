@@ -1,4 +1,25 @@
+body {
+  background: #F2F2F2
+}
+
+
 .app {
-  width: 30%;
+  width: 80%;
   margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* position: relative; */
+}
+
+
+.form-main-container{
+  width: 30%;
+  margin-right: 10%;
+  /* position: absolute; */
+  left: 0px;
+}
+
+.todo-main-container {
+  width: 80%;
 }

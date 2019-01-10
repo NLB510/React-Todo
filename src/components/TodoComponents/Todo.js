@@ -14,7 +14,7 @@ const Todo = props => {
       <input
         type="checkbox"
         checked={props.todo.completed}
-        onChange={() => props.completeTask(props.todo.id)}
+        onChange={() => props.completeTask(props.todo.id)} // !! Create function like completed and pass in here
       />
       
       <div className="todo-content">
