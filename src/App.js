@@ -38,6 +38,25 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    if (localStorage.getItem("todoData") === null) {
+       localStorage.setItem("todoData", "[]");
+       return;
+    }  
+    const appStorage = JSON.parse(localStorage.getItem("todoData"));
+    
+    return appStorage !== "" && this.setState({ todoData: appStorage });
+
+  }
+
+  componentDidUpdate() {
+    let appStorage = localStorage.getItem("todoData");
+    const dataString = JSON.stringify(this.state.todoData);
+   
+    return appStorage !== dataString ? localStorage.setItem("todoData", JSON.stringify(this.state.todoData)) : null
+
+  }
+
   // Creates a random Id
   getNewId = () => {
     let min = 1000000000000;
@@ -63,16 +82,18 @@ class App extends React.Component {
       return alert("Please insert a task and description to continue");
     }
 
+    const updatedTodos = [
+      ...this.state.todoData,
+      {
+        task: this.state.taskInput,
+        taskDescription: this.state.taskInputText,
+        id: this.getNewId(), // random id created with each new task
+        completed: false
+      }
+    ];
+
     this.setState({
-      todoData: [
-        ...this.state.todoData,
-        {
-          task: this.state.taskInput,
-          taskDescription: this.state.taskInputText,
-          id: this.getNewId(), // random id created with each new task
-          completed: false
-        }
-      ],
+      todoData: updatedTodos,
       taskInput: "",
       taskInputText: ""
     });
@@ -80,19 +101,18 @@ class App extends React.Component {
 
   // Handles the changing the completed state of a task
   completeTask = id => {
-    this.setState(prevState => {
+    const completedTodos = this.state.todoData.map(task => {
+      if (task.id === id) {
+        task.completed = !task.completed;
+      }
+      return task;
+    });
+
+    this.setState({
       // Mapping over the current state of todos and reverses the
       // state of the completed
-      const completedTodos = prevState.todoData.map(task => {
-        if (task.id === id) {
-          task.completed = !task.completed;
-        }
-        return task;
-      });
 
-      return {
-        todoData: completedTodos
-      };
+      todoData: completedTodos
     });
   };
 
@@ -104,9 +124,7 @@ class App extends React.Component {
     // filters through the completed task for tasks that aren't completed
     // returns an array of only uncompleted tasks
     const updatedTodos = this.state.todoData.filter(task => {
-      if (!task.completed) {
-        return task;
-      }
+      return !task.completed && task;
     });
 
     // updates the todoData with the filtered array
@@ -114,7 +132,7 @@ class App extends React.Component {
       todoData: updatedTodos
     });
 
-    console.log(updatedTodos);
+    console.log(localStorage);
   };
 
   render() {
