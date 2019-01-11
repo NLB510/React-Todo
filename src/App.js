@@ -15,6 +15,12 @@ const todoData = [
     taskDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     id: 1528817084358,
     completed: false
+  },
+  {
+    task: "Finish Project",
+    taskDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    id: 1528817484358,
+    completed: false
   }
 ];
 
@@ -30,10 +36,28 @@ class App extends React.Component {
       taskInput: "",
       taskInputText: ""
     };
-
-    
   }
 
+  componentDidMount() {
+    if (localStorage.getItem("todoData") === null) {
+       localStorage.setItem("todoData", "[]");
+       return;
+    }  
+    const appStorage = JSON.parse(localStorage.getItem("todoData"));
+    
+    return appStorage !== "" && this.setState({ todoData: appStorage });
+
+  }
+
+  componentDidUpdate() {
+    let appStorage = localStorage.getItem("todoData");
+    const dataString = JSON.stringify(this.state.todoData);
+   
+    return appStorage !== dataString ? localStorage.setItem("todoData", JSON.stringify(this.state.todoData)) : null
+
+  }
+
+  // Creates a random Id
   getNewId = () => {
     let min = 1000000000000;
     let max = 9999999999999;
@@ -43,7 +67,7 @@ class App extends React.Component {
 
   handleChange = e => {
     const { name, value } = e.target;
-
+    // Looks at name of the targeted input field and changes it's value
     this.setState({
       [name]: value
     });
@@ -53,67 +77,83 @@ class App extends React.Component {
     e.preventDefault();
     console.log("button fired");
 
+    // alert pops up if the task and description fields are empty
+    if (this.state.taskInput === "" || this.state.taskInputText === "") {
+      return alert("Please insert a task and description to continue");
+    }
+
+    const updatedTodos = [
+      ...this.state.todoData,
+      {
+        task: this.state.taskInput,
+        taskDescription: this.state.taskInputText,
+        id: this.getNewId(), // random id created with each new task
+        completed: false
+      }
+    ];
+
     this.setState({
-      todoData: [
-        ...this.state.todoData,
-        {
-          task: this.state.taskInput,
-          taskDescription: this.state.taskInputText,
-          id: this.getNewId(),
-          completed: false
-        }
-      ],
-      inputText: "",
+      todoData: updatedTodos,
+      taskInput: "",
       taskInputText: ""
     });
   };
 
-  completeTask = (id) => {
-    this.setState(prevState => {
-      const completedTodos = prevState.todoData.map(task => {
-        if (task.id === id) {
-          task.completed = !task.completed;
-        }
-        return task;
-      });
-
-      return {
-        todoData: completedTodos
-      };
+  // Handles the changing the completed state of a task
+  completeTask = id => {
+    const completedTodos = this.state.todoData.map(task => {
+      if (task.id === id) {
+        task.completed = !task.completed;
+      }
+      return task;
     });
-  }
 
-  removeCompletedTasks = (e) => {
+    this.setState({
+      // Mapping over the current state of todos and reverses the
+      // state of the completed
+
+      todoData: completedTodos
+    });
+  };
+
+  // Handles removing all completed tasks
+  removeCompletedTasks = e => {
     e.preventDefault();
-    console.log("remove button fired")
+    console.log("remove button fired");
 
-    
-      const updatedTodos = this.state.todoData.filter(task => {
-        if (!task.completed) {
-          return task 
-        }
-      })
+    // filters through the completed task for tasks that aren't completed
+    // returns an array of only uncompleted tasks
+    const updatedTodos = this.state.todoData.filter(task => {
+      return !task.completed && task;
+    });
 
-      this.setState({
-        todoData: updatedTodos
-      })
+    // updates the todoData with the filtered array
+    this.setState({
+      todoData: updatedTodos
+    });
 
-      console.log(updatedTodos)
-       
-
-  }
+    console.log(localStorage);
+  };
 
   render() {
     return (
       <div className="app">
-        <TodoList todoList={this.state.todoData} completeTask={this.completeTask} />
-        <TodoForm
-          inputText={this.state.taskInput}
-          handleChange={this.handleChange}
-          addTask={this.addTask}
-          descriptionInput={this.state.taskTextInput}
-          removeCompletedTasks={this.removeCompletedTasks}
-        />
+      
+        <div className="form-main-container">
+          <TodoForm
+            inputText={this.state.taskInput}
+            handleChange={this.handleChange}
+            addTask={this.addTask}
+            descriptionInput={this.state.taskInputText}
+            removeCompletedTasks={this.removeCompletedTasks}
+          />
+        </div>
+        <div className="todo-main-container">
+          <TodoList
+            todoList={this.state.todoData}
+            completeTask={this.completeTask}
+          />
+        </div>
       </div>
     );
   }
