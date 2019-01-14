@@ -36,13 +36,12 @@ class App extends React.Component {
       taskInput: "",
       taskInputText: "",
       searchInput: "",
-      filtered: []
     };
   }
 
   componentDidMount() {
     if (localStorage.getItem("todoData") === null) {
-      localStorage.setItem("todoData", JSON.stringify(todoData));
+      localStorage.setItem("todoData", "[]");
       return;
     }
     const appStorage = JSON.parse(localStorage.getItem("todoData"));
@@ -78,39 +77,7 @@ class App extends React.Component {
     });
   };
 
-  handleSearch = e => {
-    
-
-    let currentList = [];
-
-    let newList = [];
-
-    if (e.target.value !== "") {
-      currentList = this.state.todoData;
-      // console.log(currentList)
-
-      newList = currentList.filter(todo => {
-        const lc = todo.task.toLowerCase();
-        // console.log(lc)
-
-        const filter = e.target.value.toLowerCase();
-
-        return lc.includes(filter);
-        // return lc
-      });
-    } else {
-      
-      newList = this.props.todoData;
-    }
-    console.log(newList)
-    
-    this.setState({
-      
-      filtered: newList
-    });
-
-    
-  };
+  
 
   addTask = e => {
     e.preventDefault();
@@ -185,13 +152,13 @@ class App extends React.Component {
             descriptionInput={this.state.taskInputText}
             removeCompletedTasks={this.removeCompletedTasks}
             searchInput={this.state.searchInput}
-            handleSearch={this.handleSearch}
           />
         </div>
         <div className="todo-main-container">
           <TodoList
-            todoList={this.state.filtered === undefined ? this.state.todoData : this.state.filtered}
+            todoList={this.state.todoData}
             completeTask={this.completeTask}
+            searchInput={this.state.searchInput}
           />
         </div>
       </div>
