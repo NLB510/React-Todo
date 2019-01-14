@@ -8,9 +8,13 @@ const Todo = props => {
     return props.todo.completed ? "completed" : null;
   }
   
+  const display = () => {
+    return props.todo.display === false && "hide" 
+  }
+
   return (
     
-    <div className={`todo-item ${completed()}`}>
+    <div className={`todo-item ${completed()} ${display()}`}>
       <input
         type="checkbox"
         checked={props.todo.completed}

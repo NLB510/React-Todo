@@ -34,27 +34,32 @@ class App extends React.Component {
     this.state = {
       todoData: todoData,
       taskInput: "",
-      taskInputText: ""
+      taskInputText: "",
+      searchInput: "",
+      filtered: []
     };
   }
 
   componentDidMount() {
     if (localStorage.getItem("todoData") === null) {
-       localStorage.setItem("todoData", "[]");
-       return;
-    }  
+      localStorage.setItem("todoData", JSON.stringify(todoData));
+      return;
+    }
     const appStorage = JSON.parse(localStorage.getItem("todoData"));
-    
-    return appStorage !== "" && this.setState({ todoData: appStorage });
 
+    return (
+      appStorage !== "" &&
+      this.setState({ todoData: appStorage, filtered: this.state.todoData })
+    );
   }
 
   componentDidUpdate() {
     let appStorage = localStorage.getItem("todoData");
     const dataString = JSON.stringify(this.state.todoData);
-   
-    return appStorage !== dataString ? localStorage.setItem("todoData", JSON.stringify(this.state.todoData)) : null
 
+    return appStorage !== dataString
+      ? localStorage.setItem("todoData", JSON.stringify(this.state.todoData))
+      : null;
   }
 
   // Creates a random Id
@@ -67,10 +72,44 @@ class App extends React.Component {
 
   handleChange = e => {
     const { name, value } = e.target;
-    // Looks at name of the targeted input field and changes it's value
+
     this.setState({
       [name]: value
     });
+  };
+
+  handleSearch = e => {
+    
+
+    let currentList = [];
+
+    let newList = [];
+
+    if (e.target.value !== "") {
+      currentList = this.state.todoData;
+      // console.log(currentList)
+
+      newList = currentList.filter(todo => {
+        const lc = todo.task.toLowerCase();
+        // console.log(lc)
+
+        const filter = e.target.value.toLowerCase();
+
+        return lc.includes(filter);
+        // return lc
+      });
+    } else {
+      
+      newList = this.props.todoData;
+    }
+    console.log(newList)
+    
+    this.setState({
+      
+      filtered: newList
+    });
+
+    
   };
 
   addTask = e => {
@@ -138,7 +177,6 @@ class App extends React.Component {
   render() {
     return (
       <div className="app">
-      
         <div className="form-main-container">
           <TodoForm
             inputText={this.state.taskInput}
@@ -146,11 +184,13 @@ class App extends React.Component {
             addTask={this.addTask}
             descriptionInput={this.state.taskInputText}
             removeCompletedTasks={this.removeCompletedTasks}
+            searchInput={this.state.searchInput}
+            handleSearch={this.handleSearch}
           />
         </div>
         <div className="todo-main-container">
           <TodoList
-            todoList={this.state.todoData}
+            todoList={this.state.filtered === undefined ? this.state.todoData : this.state.filtered}
             completeTask={this.completeTask}
           />
         </div>

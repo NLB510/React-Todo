@@ -171,8 +171,11 @@ body {
 }
 
 .todo-main-container {
-  width: 90%;
-  margin-left: 30%;
+  width: 50%;
+  margin-left: 40%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 @media (max-width: 500px) {

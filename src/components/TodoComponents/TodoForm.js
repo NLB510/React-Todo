@@ -6,6 +6,7 @@ const TodoForm = props => {
       <form onSubmit={props.addTask}>
         <h1 className="form-item title">Add A Task</h1>
         <div className="form-container">
+          <label>Task Name:</label>
           <input
             type="text"
             placeholder="What's the task?"
@@ -14,6 +15,7 @@ const TodoForm = props => {
             onChange={props.handleChange}
             className="form-item input"
           />
+          <label>Task Description:</label>
           <textarea
             name="taskInputText"
             placeholder="Task Description"
@@ -21,13 +23,25 @@ const TodoForm = props => {
             onChange={props.handleChange}
             className="form-item textarea"
           />
-
-          <button className="form-item" type="submit">
-            Add Task
-          </button>
-          <button className="form-item" onClick={props.removeCompletedTasks}>
-            Remove Completed
-          </button>
+          <div className="button-container">
+            <button className="form-item button" type="submit">
+              Add Task
+            </button>
+            <button
+              className="form-item button"
+              onClick={props.removeCompletedTasks}
+            >
+              Remove Completed
+            </button>
+          </div>
+          <input
+            type="text"
+            className="form-item input"
+            placeholder="Search Tasks"
+            // name="searchInput"
+            // value={props.searchInput}
+            onChange={props.handleSearch}
+          />
         </div>
       </form>
     </div>

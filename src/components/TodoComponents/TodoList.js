@@ -4,18 +4,15 @@
 import React from "react";
 import Todo from "./Todo";
 
-
 const TodoList = props => {
   return (
     <React.Fragment>
-      {
-        
-        props.todoList.map(todo => {
-          return <Todo todo={todo} key={todo.id} completeTask={props.completeTask} />
-        })
-      }
+      {props.todoList.map(todo => {
+        return (
+          <Todo todo={todo} key={todo.id} completeTask={props.completeTask} />
+        );
+      })}
     </React.Fragment>
-    
   );
 };
 
