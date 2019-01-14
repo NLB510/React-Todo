@@ -4,7 +4,7 @@ const TodoForm = props => {
   return (
     <div>
       <form onSubmit={props.addTask}>
-        <h1 className="form-item title">Add A Task</h1>
+        <h1 className="form-item title">Task Manager</h1>
         <div className="form-container">
           <label>Task Name:</label>
           <input
@@ -34,14 +34,17 @@ const TodoForm = props => {
               Remove Completed
             </button>
           </div>
-          <input
-            type="text"
-            className="form-item input"
-            placeholder="Search Tasks"
-            name="searchInput"
-            value={props.searchInput}
-            onChange={props.handleChange}
-          />
+          <div>
+            <label>Search Tasks:</label>
+            <input
+              type="text"
+              className="form-item input"
+              placeholder="Search Tasks"
+              name="searchInput"
+              value={props.searchInput}
+              onChange={props.handleChange}
+            />
+          </div>
         </div>
       </form>
     </div>
